@@ -85,192 +85,255 @@ export default function Books() {
     });
   };
 
-  // Determine if scrollbar should be visible based on number of books
-  const showScrollbar = books.length > 3;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-8">
-      <div className="max-w-6xl mx-auto">
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-indigo-800 inline-flex items-center gap-3">
-            <span className="text-3xl">📚</span> Ramzi Collection
+    <div className="min-h-screen bg-slate-900 p-6 text-gray-100">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-12 text-center">
+          <h1 className="text-5xl font-black mb-2">
+            <span className="text-purple-400">Tome</span>
+            <span className="text-cyan-400">Track</span>
           </h1>
-          <p className="text-gray-600 mt-2">
-            Manage your personal book catalog with ease
+          <p className="text-gray-400 text-lg">
+            Modern library management for book enthusiasts
           </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Add / Edit Book Panel */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-indigo-100">
-            <div className="bg-indigo-700 p-4">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <span>{editingBook ? "✏️ Edit Book" : "➕ Add New Book"}</span>
-              </h2>
+        <div className="flex flex-col gap-8">
+          {/* Stats Bar */}
+          <div className="bg-slate-800 rounded-lg p-4 flex justify-between items-center shadow-md border border-slate-700">
+            <div className="flex items-center gap-4">
+              <div className="bg-purple-500 h-12 w-12 rounded-lg flex items-center justify-center">
+                <span className="text-xl">📚</span>
+              </div>
+              <div>
+                <p className="text-sm text-gray-400">Collection Size</p>
+                <p className="text-2xl font-bold">
+                  {books.length} {books.length === 1 ? "book" : "books"}
+                </p>
+              </div>
             </div>
-            <div className="p-6">
-              {error && (
-                <div className="bg-red-50 text-red-700 p-3 rounded-lg mb-4 border border-red-100">
-                  <p className="flex items-center gap-2">
-                    <span>⚠️</span> {error}
-                  </p>
-                </div>
-              )}
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Book Title"
-                  className="w-full p-3 border border-gray-300 rounded-lg"
-                  value={form.title}
-                  onChange={handleChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="author"
-                  placeholder="Author"
-                  className="w-full p-3 border border-gray-300 rounded-lg"
-                  value={form.author}
-                  onChange={handleChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="genre"
-                  placeholder="Genre"
-                  className="w-full p-3 border border-gray-300 rounded-lg"
-                  value={form.genre}
-                  onChange={handleChange}
-                />
-                <input
-                  type="date"
-                  name="publication_date"
-                  className="w-full p-3 border border-gray-300 rounded-lg"
-                  value={form.publication_date}
-                  onChange={handleChange}
-                />
-                <textarea
-                  name="description"
-                  placeholder="Brief description"
-                  className="w-full p-3 border border-gray-300 rounded-lg h-24"
-                  value={form.description}
-                  onChange={handleChange}
-                ></textarea>
 
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium transition"
-                >
-                  {editingBook ? "🔄 Update Book" : "📝 Add to Collection"}
-                </button>
-
-                {/* Cancel Edit Button */}
-                {editingBook && (
-                  <button
-                    type="button"
-                    className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 py-3 px-4 rounded-lg mt-2"
-                    onClick={() => {
-                      setEditingBook(null);
-                      setForm({
-                        title: "",
-                        author: "",
-                        genre: "",
-                        publication_date: "",
-                        description: "",
-                      });
-                    }}
-                  >
-                    ❌ Cancel Edit
-                  </button>
-                )}
-              </form>
-            </div>
+            {editingBook ? (
+              <div className="bg-cyan-900/40 py-2 px-4 rounded-full text-cyan-400 text-sm">
+                Currently editing: {editingBook.title}
+              </div>
+            ) : (
+              <div className="bg-purple-900/40 py-2 px-4 rounded-full text-purple-400 text-sm">
+                Ready to add new books
+              </div>
+            )}
           </div>
 
-          {/* Book Collection Panel */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-indigo-100 lg:col-span-2 flex flex-col">
-            <div className="bg-indigo-700 p-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <span>📖</span> Book Collection
-              </h2>
-              <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm">
-                {books.length} {books.length === 1 ? "book" : "books"}
-              </span>
+          {/* Main Content */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            {/* Add / Edit Book Panel */}
+            <div className="xl:col-span-1 bg-slate-800 rounded-lg shadow-lg border border-slate-700 overflow-hidden">
+              <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-4">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  {editingBook ? "✏️ Update Book Info" : "✨ Add to Collection"}
+                </h2>
+              </div>
+
+              <div className="p-6">
+                {error && (
+                  <div className="bg-red-900/20 border-l-4 border-red-500 text-red-400 p-4 mb-6 rounded">
+                    {error}
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Title
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Enter book title"
+                      className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition text-white placeholder-gray-400"
+                      value={form.title}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Author
+                    </label>
+                    <input
+                      type="text"
+                      name="author"
+                      placeholder="Enter author name"
+                      className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition text-white placeholder-gray-400"
+                      value={form.author}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                        Genre
+                      </label>
+                      <input
+                        type="text"
+                        name="genre"
+                        placeholder="e.g. Fiction"
+                        className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition text-white placeholder-gray-400"
+                        value={form.genre}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                        Publication Date
+                      </label>
+                      <input
+                        type="date"
+                        name="publication_date"
+                        className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition text-white"
+                        value={form.publication_date}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Description
+                    </label>
+                    <textarea
+                      name="description"
+                      placeholder="Enter a brief description of the book"
+                      className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg h-32 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition resize-none text-white placeholder-gray-400"
+                      value={form.description}
+                      onChange={handleChange}
+                    ></textarea>
+                  </div>
+
+                  <div className="flex flex-col gap-3 pt-2">
+                    <button
+                      type="submit"
+                      className="py-3 px-6 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-cyan-600 transition shadow-lg hover:shadow-purple-500/20 flex items-center justify-center gap-2"
+                    >
+                      {editingBook ? "🔄 Update" : "➕ Add Book"}
+                    </button>
+
+                    {editingBook && (
+                      <button
+                        type="button"
+                        className="py-3 px-6 bg-slate-700 text-gray-300 rounded-lg font-medium hover:bg-slate-600 transition flex items-center justify-center gap-2"
+                        onClick={() => {
+                          setEditingBook(null);
+                          setForm({
+                            title: "",
+                            author: "",
+                            genre: "",
+                            publication_date: "",
+                            description: "",
+                          });
+                        }}
+                      >
+                        <span>❌</span> Cancel Edit
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
             </div>
 
-            {/* Scrollable book list container */}
-            <div
-              className={`p-6 ${showScrollbar ? "overflow-y-auto" : ""}`}
-              style={showScrollbar ? { maxHeight: "500px" } : {}}
-            >
+            {/* Book Collection Panel */}
+            <div className="xl:col-span-2 bg-slate-800 rounded-lg shadow-lg border border-slate-700 overflow-hidden flex flex-col">
+              <div className="bg-slate-700 p-4 flex justify-between items-center border-b border-slate-600">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <span>📖</span> Your Library
+                </h2>
+
+                <div className="flex gap-2">
+                  <span className="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm">
+                    {books.length} {books.length === 1 ? "volume" : "volumes"}
+                  </span>
+                </div>
+              </div>
+
               {books.length === 0 ? (
-                <p className="text-gray-500 text-center">
-                  Your collection is empty
-                </p>
+                <div className="flex flex-col items-center justify-center p-20 text-center flex-grow">
+                  <div className="w-24 h-24 bg-slate-700 rounded-full flex items-center justify-center mb-4 text-4xl">
+                    📚
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-400 mb-2">
+                    No books yet
+                  </h3>
+                  <p className="text-gray-500 max-w-md">
+                    Your digital bookshelf is waiting for its first addition.
+                    Add books to start building your collection.
+                  </p>
+                </div>
               ) : (
-                <ul className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 max-h-[600px] overflow-y-auto">
                   {books.map((book) => (
-                    <li
+                    <div
                       key={book.id}
-                      className="border p-5 rounded-lg flex justify-between items-start"
+                      className="bg-slate-700 rounded-lg overflow-hidden border border-slate-600 hover:border-purple-500/50 transition group relative"
                     >
-                      <div>
-                        <h3 className="font-bold text-lg text-indigo-800">
-                          {book.title}
-                        </h3>
-                        <p className="text-gray-600 mt-1">By {book.author}</p>
-
-                        {book.genre && (
-                          <span className="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">
-                            {book.genre}
-                          </span>
-                        )}
-
-                        {book.publication_date && (
-                          <p className="text-gray-500 text-sm mt-1">
-                            📅 Published:{" "}
-                            {new Date(
-                              book.publication_date
-                            ).toLocaleDateString()}
-                          </p>
-                        )}
-
-                        {book.description && (
-                          <p className="text-gray-700 mt-2 text-sm">
-                            📝 {book.description}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="flex gap-3">
+                      <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleEditClick(book)}
-                          className="bg-yellow-100 hover:bg-yellow-500 text-yellow-500 hover:text-white px-3 py-2 rounded-lg"
+                          className="bg-cyan-500 p-2 rounded-lg text-white hover:bg-cyan-400 transition shadow-md"
                         >
                           ✏️
                         </button>
 
                         <button
                           onClick={() => handleDelete(book.id)}
-                          className="bg-red-100 hover:bg-red-500 text-red-500 hover:text-white px-3 py-2 rounded-lg"
+                          className="bg-red-500 p-2 rounded-lg text-white hover:bg-red-400 transition shadow-md"
                         >
                           🗑️
                         </button>
                       </div>
-                    </li>
+
+                      <div className="p-5">
+                        <div className="flex justify-between items-start mb-4">
+                          <h3 className="font-bold text-xl text-white">
+                            {book.title}
+                          </h3>
+                          {book.genre && (
+                            <span className="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-xs font-medium ml-2">
+                              {book.genre}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center mb-3 text-gray-300">
+                          <span className="mr-2">👤</span>
+                          <span>{book.author}</span>
+                        </div>
+
+                        {book.publication_date && (
+                          <div className="text-gray-400 text-sm mb-3">
+                            Published:{" "}
+                            {new Date(
+                              book.publication_date
+                            ).toLocaleDateString()}
+                          </div>
+                        )}
+
+                        {book.description && (
+                          <div className="mt-3 pt-3 border-t border-slate-600">
+                            <p className="text-gray-400 text-sm line-clamp-3">
+                              {book.description}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
             </div>
-
-            {/* Scroll indicator that appears only when scrolling is active */}
-            {showScrollbar && (
-              <div className="bg-indigo-50 p-2 text-center text-xs text-indigo-500 border-t border-indigo-100">
-                Scroll to see more books
-              </div>
-            )}
           </div>
         </div>
       </div>
