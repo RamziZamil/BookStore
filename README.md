@@ -25,7 +25,7 @@
 Clone the repository and navigate to the project directory:
 
 ```bash
-git clone https://github.com/07asn/Front-Back-NodeJS.git
+git clone https://github.com/RamziZamil/BookStore.git
 cd your-repo
 npm install express pg cors
 nodemon server.js
